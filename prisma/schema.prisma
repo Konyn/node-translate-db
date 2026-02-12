@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model System {
+  id         Int      @id @default(autoincrement())
+  languageId Int
+  language   Language @relation(fields: [languageId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt()
+}
+
+model Language {
+  id                     Int                     @id @default(autoincrement())
+  code                   String                  @unique
+  name                   String                  @unique
+  rtl                    Boolean                 @default(false)
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt()
+  systems                System[]
+  deviceTypeTranslations DeviceTypeTranslation[]
+}
+
+model Sector {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  position  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  devices   Device[]
+}
+
+model Device {
+  id                  Int      @id @default(autoincrement())
+  name                String
+  locationDescription String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt()
+
+  deviceTypeId Int
+  deviceType   DeviceType @relation(fields: [deviceTypeId], references: [id])
+
+  sectorId Int?
+  sector   Sector? @relation(fields: [sectorId], references: [id])
+}
+
+model DeviceType {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  devices      Device[]
+  translations DeviceTypeTranslation[]
+}
+
+model DeviceTypeTranslation {
+  id           Int        @id @default(autoincrement())
+  deviceTypeId Int
+  deviceType   DeviceType @relation(fields: [deviceTypeId], references: [id], onDelete: Cascade)
+
+  languageId Int
+  language   Language @relation(fields: [languageId], references: [id])
+
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@unique([deviceTypeId, languageId])
+  @@index([languageId])
+}
