@@ -18,7 +18,7 @@ export class DeviceTypeController {
 
   static async list(req: DeviceTypeRequest, reply: FastifyReply) {
     const { data, error } = await Api(() =>
-      DeviceTypesService.list(req.query.name ?? ""),
+      DeviceTypesService.list(req.query.name),
     );
 
     if (error) {

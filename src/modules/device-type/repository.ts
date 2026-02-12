@@ -12,21 +12,22 @@ export class DeviceTypesRepository {
   static async findByName(name: string) {
     return await prisma.deviceType.findFirst({ where: { name } });
   }
-  static async findAll(search: string) {
-    console.log("search: ", search);
-
+  static async findAll(search?: string) {
     const languageId = await getSystemLanguage();
-    return await prisma.deviceType.findMany({
-      where: {
-        translations: {
-          some: {
-            languageId,
-            name: {
-              contains: search,
+    const whereCondition = search?.length
+      ? {
+          translations: {
+            some: {
+              ...(languageId !== 1 && { languageId }),
+              name: {
+                contains: search,
+              },
             },
           },
-        },
-      },
+        }
+      : {};
+    return await prisma.deviceType.findMany({
+      where: whereCondition,
       include: {
         devices: true,
         translations: {

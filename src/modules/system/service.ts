@@ -2,23 +2,24 @@ import { getSystemLanguage } from "../translate/cache";
 import { SystemRepository } from "./repository";
 import { UpdateSystemSchema } from "./schema";
 
-export class SystemService{
-    static async updateLanguage(data: UpdateSystemSchema){
-        const system = await SystemRepository.findByLanguageId(data.languageId)
+export class SystemService {
+  static async updateLanguage(data: UpdateSystemSchema) {
+    const system = await SystemRepository.findByLanguageId(data.languageId);
 
-        if(system) throw new Error("Linguagem já em uso");
+    if (system) throw new Error("Linguagem já em uso");
 
-        const update = await SystemRepository.updateLanguage(data);
-        await getSystemLanguage(true)
+    const update = await SystemRepository.updateLanguage(data);
+    await getSystemLanguage(true);
 
-        return update;
-    }
+    return update;
+  }
 
-    static async list(){
-        const system = await SystemRepository.list();
+  static async list() {
+    const system = await SystemRepository.list();
 
-        if(!system) throw new Error("Dados do sistema ainda não foram adicionados");
+    if (!system)
+      throw new Error("Dados do sistema ainda não foram adicionados");
 
-        return system;
-    }
+    return system;
+  }
 }

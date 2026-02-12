@@ -10,9 +10,8 @@ export class DeviceRepository {
     const languageId = await getSystemLanguage();
     const whereCondition =
       languageId === 1
-        ? {} // pt-BR: sem filtro, traz tudo
+        ? {}
         : {
-            // outros idiomas: filtra por tradução
             deviceType: {
               translations: {
                 some: { languageId },

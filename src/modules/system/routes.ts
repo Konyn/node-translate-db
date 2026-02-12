@@ -12,7 +12,9 @@ export const systemRoutes = async (fastify: FastifyTypedInstance) => {
         description: "List system info",
         response: {
           200: SystemSchema.array(),
-          400: z.string(),
+          400: z.object({
+            error: z.string(),
+          }),
         },
       },
     },
@@ -28,7 +30,9 @@ export const systemRoutes = async (fastify: FastifyTypedInstance) => {
         body: updateSystemSchema,
         response: {
           204: z.object({}),
-          400: z.string(),
+          400: z.object({
+            error: z.string(),
+          }),
         },
       },
     },

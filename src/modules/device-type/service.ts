@@ -20,8 +20,8 @@ export class DeviceTypesService {
     return deviceType;
   }
 
-  static async list(data: string) {
-    const deviceTypes = await DeviceTypesRepository.findAll(data);
+  static async list(search?: string) {
+    const deviceTypes = await DeviceTypesRepository.findAll(search);
 
     if (!deviceTypes) throw new Error("Tipo de dispositivo não encontrado");
 

@@ -12,6 +12,9 @@ export const deviceRoutes = async (fastify: FastifyTypedInstance) => {
         description: "Add new device",
         response: {
           200: deviceSchemaWithDeviceTypes.array(),
+          400: z.object({
+            error: z.string(),
+          }),
         },
       },
     },
@@ -29,6 +32,9 @@ export const deviceRoutes = async (fastify: FastifyTypedInstance) => {
         }),
         response: {
           200: deviceSchemaWithDeviceTypes,
+          400: z.object({
+            error: z.string(),
+          }),
         },
       },
     },

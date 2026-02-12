@@ -5,9 +5,8 @@ import { UpdateSystemLanguageRequest } from "./types";
 
 export class SystemController {
   static async update(req: UpdateSystemLanguageRequest, reply: FastifyReply) {
-    const { data, error } = await Api(() =>
-      SystemService.updateLanguage(req.body),
-    );
+    const { error } = await Api(() => SystemService.updateLanguage(req.body));
+    console.log("error", error);
 
     if (error) {
       return reply.status(400).send({ error: error.message });
